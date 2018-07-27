@@ -21,15 +21,26 @@ version_prompt(){
 }
 
 am_r_prompt(){
-  if [[ $(am_is_git) == 1 ]]; then
-    echo -ne "`am_bg_count``am_git_rebasing`%F{$am_vcs_color}${AM_GIT_SYM}:%f`am_git_branch``am_git_commit_time` `am_git_rev``am_git_left_right``am_git_dirty`"
-  elif [[ $(am_is_hg) == 1 ]]; then
-    echo -ne "`am_bg_count`%F{$am_vcs_color}${AM_HG_SYM}:%f`am_hg_branch` `am_hg_rev`"
-  elif [[ $(am_is_svn) == 1 ]]; then
-    echo -ne "`am_bg_count`%F{$am_vcs_color}${AM_SVN_SYM}:%f`am_svn_rev`"
+  if [[ ! -z "$AM_R_PROMPT" ]]
+  then
+    for _r in $
+    do 
+      if [ "$_v" = "git" ] && [[ $(am_is_git) == 1 ]]; then
+        echo -ne "`am_bg_count``am_git_rebasing`%F{$am_vcs_color}${AM_GIT_SYM}:%f`am_git_branch``am_git_commit_time` `am_git_rev``am_git_left_right``am_git_dirty`"
+      fi
+
+      if [ "$_v" = "hg" ] && [[ $(am_is_hg) == 1 ]]; then
+        echo -ne "`am_bg_count`%F{$am_vcs_color}${AM_HG_SYM}:%f`am_hg_branch` `am_hg_rev`"
+      fi
+      
+      if [ "$_v" = "svn" ] && [[ $(am_is_svn) == 1 ]]; then
+        echo -ne "`am_bg_count`%F{$am_vcs_color}${AM_SVN_SYM}:%f`am_svn_rev`"
+      
+      fi
+    done
   else
     echo -ne "`am_bg_count`"
-  fi
+  fi 
 }
 
 function am_prompt_general_short_dir(){
